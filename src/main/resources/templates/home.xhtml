@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Covid-19 Tracker</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+              integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" 
+              crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Covid-19 Tracker</h1>
+            <p>This application lists the total number of cases reported across the world.</p>
+            <p th:text="${newCases}"></p>
+
+            <div class="jumbotron">
+                <h1 class="display-4" th:text="${totalReportedCases}"></h1>
+                <p> 
+                    <span class="lead">Total Reported Cases as of Today</span>
+                    <span th:text="${#temporals.format(localDateTime, 'dd-MM-yyyy HH:mm')}"> </span>
+                </p>
+                <hr class="my-4">
+                <p>
+                    <span>New cases reported since yesterday is: </span>
+                    <span th:text="${totalNewCases}"></span>
+                </p>
+
+            </div>
+
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Total Cases</th>
+                    <th>New Cases Today</th>
+                </tr>
+                <tr th:each="covidStats : ${covidStats}">
+                    <td th:text="${covidStats.state}">Onions</td>
+                    <td th:text="${covidStats.country}"></td>
+                    <td th:text="${covidStats.latestTotalCases}">0</td>
+                    <td th:text="${covidStats.diffFromPreviousDay}">0</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+</html>
