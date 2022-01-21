@@ -6,8 +6,11 @@
 package io.kiokoCode.covid19tracker.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -18,60 +21,16 @@ import java.util.Date;
 
 @Entity
 @Data
+@ToString
 public class CovidStats {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String state;
     private String country;
     private int latestTotalCases;
     private int diffFromPreviousDay;
     private Date todayDate;
-
-    public Date getTodayDate() {
-        return todayDate;
-    }
-
-    public void setTodayDate(Date todayDate) {
-        this.todayDate = todayDate;
-    }
-
-    public int getDiffFromPreviousDay() {
-        return diffFromPreviousDay;
-    }
-
-    public void setDiffFromPreviousDay(int diffFromPreviousDay) {
-        this.diffFromPreviousDay = diffFromPreviousDay;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public int getLatestTotalCases() {
-        return latestTotalCases;
-    }
-
-    public void setLatestTotalCases(int latestTotalCases) {
-        this.latestTotalCases = latestTotalCases;
-    }
-
-    @Override
-    public String toString() {
-        return "CovidStats{" + "state=" + state + ", country=" + country + ", latestTotalCases=" + latestTotalCases + '}';
-    }
-    
     
 }

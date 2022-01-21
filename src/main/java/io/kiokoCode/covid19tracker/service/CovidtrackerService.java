@@ -12,14 +12,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+
+import io.kiokoCode.covid19tracker.repository.CovidStatusRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,13 @@ public class CovidtrackerService {
 
     private final static String COVID_TRACKER_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
+    private final CovidStatusRepository repository;
+
     private List<CovidStats> allStats = new ArrayList<>();
+
+    public CovidtrackerService(CovidStatusRepository repository) {
+        this.repository = repository;
+    }
 
     @PostConstruct
     @Scheduled(cron = "* * 1 * * * ")
@@ -59,6 +64,8 @@ public class CovidtrackerService {
             stats.setDiffFromPreviousDay(latestCases - previousDayCases);
             //System.out.println(stats);
             newStats.add(stats);
+
+            saveCovidStatusToDb(stats);
         }
 
         this.allStats = newStats;
@@ -70,6 +77,10 @@ public class CovidtrackerService {
 
     public void setAllStats(List<CovidStats> allStats) {
         this.allStats = allStats;
+    }
+
+    public void saveCovidStatusToDb (CovidStats covidStats) {
+        repository.save(covidStats);
     }
 
 }
