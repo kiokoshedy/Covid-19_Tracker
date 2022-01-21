@@ -8,6 +8,7 @@ package io.kiokoCode.covid19tracker.service;
 import io.kiokoCode.covid19tracker.model.CovidStats;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -41,7 +42,7 @@ public class CovidtrackerService {
 
     @PostConstruct
     @Scheduled(cron = "* * 1 * * * ")
-    public void fetchCovidData() throws IOException, InterruptedException {
+    public void fetchCovidData() throws IOException, InterruptedException, NoSuchFieldException {
 
         List<CovidStats> newStats = new ArrayList<>();
 
@@ -62,6 +63,7 @@ public class CovidtrackerService {
             int previousDayCases = Integer.parseInt(record.get(record.size() - 2));
             stats.setLatestTotalCases(latestCases);
             stats.setDiffFromPreviousDay(latestCases - previousDayCases);
+
             //System.out.println(stats);
             newStats.add(stats);
 
@@ -80,6 +82,12 @@ public class CovidtrackerService {
     }
 
     public void saveCovidStatusToDb (CovidStats covidStats) {
+
+        /*Object someObject = CovidStats.class;
+        Class<?> someClass = someObject.getClass();
+        Field someField = someClass.getField("country");*//*
+        if(someField.getName().equals(covidStats.getCountry())) {*/
+
         repository.save(covidStats);
     }
 
