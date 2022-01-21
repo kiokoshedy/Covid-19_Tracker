@@ -5,14 +5,23 @@
  */
 package io.kiokoCode.covid19tracker.model;
 
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
  *
  * @author DATA INTEGRATED
  */
+
+@Entity
+@Data
 public class CovidStats {
-    
+
+    @Id
+    private Long id;
     private String state;
     private String country;
     private int latestTotalCases;
